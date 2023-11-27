@@ -8,12 +8,12 @@ namespace ConsoleManagement
 {
     public class Program
     {
-        static void Main(string[] args)
-        {
-            MainAsync().GetAwaiter().GetResult();
-        }
+        //static void Main(string[] args)
+        //{
+        //    Main2Async().GetAwaiter().GetResult();
+        //}
 
-        private static async Task MainAsync()
+        private static async Task Main2Async()
         {
             // 设置初始化参数
             ManagementClientOptions clientOptions = new ManagementClientOptions

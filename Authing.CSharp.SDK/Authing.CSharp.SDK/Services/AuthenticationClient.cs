@@ -13,6 +13,7 @@ using Jose;
 using Newtonsoft.Json;
 using Authing.CSharp.SDK.Models;
 using Authing.CSharp.SDK.Models.Management;
+using Microsoft.AspNetCore.Http;
 
 namespace Authing.CSharp.SDK.Services
 {
@@ -206,7 +207,7 @@ namespace Authing.CSharp.SDK.Services
         /// <param name="nonce">出现在 ID Token 中的随机字符串，默认自动生成</param>
         /// <param name="redirectUri">回调地址，覆盖初始化参数中的对应设置</param>
         /// <param name="forced">即便用户已经登录也强制显示登录页</param>
-        public void LoginWithRedirect(Microsoft.AspNetCore.Http.HttpResponse httpResponse, string scope = null,
+        public void LoginWithRedirect(HttpResponse httpResponse, string scope = null,
            string state = null, string nonce = null, string redirectUri = null,
            bool forced = false)
         {
@@ -221,7 +222,7 @@ namespace Authing.CSharp.SDK.Services
             {
                 State = string.IsNullOrWhiteSpace(state) ? authUrlResult.State : state,
                 Nonce = string.IsNullOrWhiteSpace(nonce) ? authUrlResult.Nonce : nonce,
-                RedirectUri = string.IsNullOrWhiteSpace(redirectUri) ? options.RediretUri : redirectUri
+                RedirectUri = string.IsNullOrWhiteSpace(redirectUri) ? options.RedirectUri : redirectUri
             };
 
             string base64Str = stringService.B64Encode(jsonService.SerializeObject(loginTransaction));
@@ -301,7 +302,7 @@ namespace Authing.CSharp.SDK.Services
         /// <param name="idToken">用户登录时获取的 ID Token，用于无效化用户 Token，建议传入</param>
         /// <param name="redirectUri">登出完成后的重定向目标 URL，覆盖初始化参数中的对应设置</param>
         /// <param name="state">传递到目标 URL 的中间状态标识符</param>
-        public void LogoutWithRedirect(Microsoft.AspNetCore.Http.HttpResponse response, string idToken = null, string redirectUri = null, string state = null)
+        public void LogoutWithRedirect(HttpResponse response, string idToken = null, string redirectUri = null, string state = null)
         {
             response.Headers["Location"] = BuildLogoutUrl(idToken, redirectUri, state);
             response.StatusCode = 302;
